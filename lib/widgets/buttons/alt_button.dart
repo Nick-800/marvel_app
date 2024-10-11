@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marvel_app/helpers/constants.dart';
 
 class AltButton extends StatelessWidget {
   final String text;
@@ -15,8 +16,8 @@ class AltButton extends StatelessWidget {
       {super.key,
       required this.text,
       required this.onTap,
-      this.btnColor = Colors.red,
-      this.txtColor = Colors.white,
+      this.btnColor = Colors.white,
+      this.txtColor = Colors.red,
       this.horizontalPadding,
       this.inProgress = false,
       this.verticalPadding,
@@ -25,29 +26,42 @@ class AltButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        style: ButtonStyle(
-          backgroundColor: WidgetStateProperty.all(btnColor),
-          elevation: WidgetStateProperty.all(0),
-        ),
-        onPressed: () => onTap(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: inProgress
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    backgroundColor: Colors.white24,
-                    strokeWidth: 2,
-                  ))
-              : Center(
-                  child: Text(
-                    text,
-                    style: TextStyle(color: txtColor),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: 
+      
+      ElevatedButton(
+        
+          style: ElevatedButton.styleFrom(
+
+            side: BorderSide(
+              width: borderRadius,
+              color: Colors.red
+            ),
+            backgroundColor: btnColor,
+            elevation: 0,
+          ),
+          onPressed: () => onTap(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: inProgress
+                ? SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: mainColor,
+                      backgroundColor: Colors.white24,
+                      strokeWidth: 2,
+                    ))
+                : Center(
+                    child: Text(
+                      text,
+                      style: TextStyle(color: txtColor, fontWeight: FontWeight.w900),
+                    ),
                   ),
-                ),
-        ));
+          ),
+          
+          ),
+    );
   }
 }

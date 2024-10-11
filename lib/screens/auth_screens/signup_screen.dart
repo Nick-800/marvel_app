@@ -1,12 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-
 import 'package:flutter/material.dart';
 import 'package:marvel_app/helpers/constants.dart';
 import 'package:marvel_app/helpers/functions_helper.dart';
 import 'package:marvel_app/providers/auth_provider.dart';
 import 'package:marvel_app/widgets/buttons/main_button.dart';
-import 'package:marvel_app/widgets/custome_text_form_filde.dart';
+import 'package:marvel_app/widgets/custom_text_form_field.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -44,8 +43,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 40,
                 ),
-                CustomeTextFormFiled(
-                    label: "name",
+                CustomTextFormField(
+                    label: "Name",
                     textEditingController: nameController,
                     validate: (v) {
                       if (v!.isEmpty) {
@@ -56,20 +55,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 25,
                 ),
-                CustomeTextFormFiled(
-                    label: "phone",
+                CustomTextFormField(
+                    label: "Phone",
                     textEditingController: phoneController,
                     validate: (v) {
                       if (v!.length != 10) {
-                        return " phone must be 10 numbers ";
+                        return " Phone must be 10 numbers ";
                       }
                       return null;
                     }),
                 const SizedBox(
                   height: 25,
                 ),
-                CustomeTextFormFiled(
-                    label: "password",
+                CustomTextFormField(
+                    label: "Password",
                     textEditingController: passwordController,
                     validate: (v) {
                       if (v!.isEmpty) {
@@ -80,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       }
                       return null;
                     }),
-               const SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 PopupMenuButton(
@@ -97,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: Text(e),
                             )));
                   },
-                  child: CustomeTextFormFiled(
+                  child: CustomTextFormField(
                       isEn: false,
                       label: "Gender",
                       textEditingController: genderController,
@@ -111,16 +110,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return null;
                       }),
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 25,
                 ),
                 GestureDetector(
                   onTap: () {
                     showDatePicker(
-                            context: context,
-                            firstDate: DateTime(1997),
-                            lastDate: DateTime(20060))
-                        .then((s) {
+                      context: context,
+                      firstDate: DateTime(1997),
+                      lastDate: DateTime(2060),
+                    ).then((s) {
                       setState(() {
                         dateController.text =
                             s!.toIso8601String().substring(0, 10);
@@ -128,14 +127,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       });
                     });
                   },
-                  child: CustomeTextFormFiled(
+                  child: CustomTextFormField(
                       isEn: false,
                       label: "Date",
-                      hint: 'yyyy-mm-dd',
                       textEditingController: dateController,
                       validate: (v) {
                         if (v!.isEmpty) {
-                          return "password is required ";
+                          return "DOB is required ";
                         }
                         return null;
                       }),
@@ -156,7 +154,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         if (onValue) {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("created ")));
+                              const SnackBar(content: Text("Created Account Successfully")));
                         }
                       });
                     },

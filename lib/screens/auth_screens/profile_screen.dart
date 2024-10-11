@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_app/helpers/constants.dart';
 import 'package:marvel_app/helpers/file_picker.dart';
+import 'package:marvel_app/helpers/functions_helper.dart';
 import 'package:marvel_app/helpers/get_size.dart';
 import 'package:marvel_app/models/user_model.dart';
 import 'package:marvel_app/providers/auth_provider.dart';
 import 'package:marvel_app/widgets/buttons/main_button.dart';
-import 'package:marvel_app/widgets/custome_text_form_filde.dart';
+import 'package:marvel_app/widgets/custom_text_form_field.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,7 +19,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController genderController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController PhoneController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   List<String> genders = ['male', 'female'];
   GlobalKey<FormState> formkey = GlobalKey<FormState>();
@@ -28,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Provider.of<AuthProvider>(context, listen: false).getMe().then((userdata) {
       genderController.text = userdata!.gender;
       nameController.text = userdata.name;
-      PhoneController.text = userdata.phone;
+      phoneController.text = userdata.phone;
       dateController.text = userdata.dob.toIso8601String().substring(0, 10);
     });
     super.initState();
@@ -40,14 +41,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: Text("Profile  Screen"),
+          title: const Text("Profile  Screen"),
         ),
         body: authConsumer.isFaild
             ? const Center(
-                child: Text("soemthing went wrong "),
+                child: Text("Something went wrong "),
               )
             : authConsumer.isLoading || authConsumer.user == null
-                ? Center(
+                ? const Center(
                     child: CircularProgressIndicator(),
                   )
                 : Form(
@@ -100,10 +101,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         },
                                       )),
                                     ))),
-                            SizedBox(
+                            const SizedBox(
                               height: 40,
                             ),
-                            CustomeTextFormFiled(
+                            CustomTextFormField(
                                 isEn: isEnable,
                                 label: "name",
                                 textEditingController: nameController,
@@ -113,23 +114,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   }
                                   return null;
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 25,
                             ),
-                            CustomeTextFormFiled(
+                            CustomTextFormField(
                                 isEn: isEnable,
                                 label: "phone",
-                                textEditingController: PhoneController,
+                                textEditingController: phoneController,
                                 validate: (v) {
                                   if (v!.length != 10) {
-                                    return " phone must be 10 numers ";
+                                    return " phone must be 10 numbers ";
                                   }
                                   return null;
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 25,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 25,
                             ),
                             PopupMenuButton(
@@ -140,20 +141,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           onTap: () {
                                             setState(() {
                                               genderController.text = e;
-                                              print(genderController.text);
+                                              printDebug(genderController.text);
                                             });
                                           },
-                                          child: Text(e),
                                           value: e,
+                                          child: Text(e),
                                         )));
                               },
-                              child: CustomeTextFormFiled(
+                              child: CustomTextFormField(
                                   isEn: false,
                                   label: "Gender",
                                   textEditingController: genderController,
                                   validate: (v) {
                                     if (v!.isEmpty) {
-                                      return "gsenser is requred ";
+                                      return "gender is required ";
                                     }
                                     if (v != 'male' && v != 'female') {
                                       return "male or female ";
@@ -161,7 +162,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     return null;
                                   }),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 25,
                             ),
                             GestureDetector(
@@ -175,24 +176,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     setState(() {
                                       dateController.text =
                                           s!.toIso8601String().substring(0, 10);
-                                      print(dateController.text);
+                                      printDebug(dateController.text);
                                     });
                                   });
                                 }
                               },
-                              child: CustomeTextFormFiled(
+                              child: CustomTextFormField(
                                   isEn: false,
                                   label: "Date",
                                   hint: 'yyyy-mm-dd',
                                   textEditingController: dateController,
                                   validate: (v) {
                                     if (v!.isEmpty) {
-                                      return "password is requred ";
+                                      return "password is required ";
                                     }
                                     return null;
                                   }),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 25,
                             ),
                             Padding(
@@ -206,7 +207,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   });
                                   // Provider.of<AuthProvider>(context, listen: false).signup({
                                   //   "name": "${nameController.text}",
-                                  //   "phone": "${PhoneController.text}",
+                                  //   "phone": "${phoneController.text}",
                                   //   "gender": "${genderController.text}",
                                   //   "DOB": "${dateController.text}"
                                   // }).then((onValue) {
@@ -250,7 +251,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           if (onValue) {
                                             Navigator.pop(context);
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
+                                                .showSnackBar(const SnackBar(
                                                     content: Text("Updated ")));
 
                                             isEnable = false;
@@ -261,7 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       btnColor: mainColor,
                                     ),
                                   )
-                                : SizedBox()
+                                : const SizedBox()
                           ],
                         ),
                       ),

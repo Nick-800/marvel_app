@@ -1,6 +1,7 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
     "cSpell.words": [
+        "clickables",
         "contex",
         "cupertino",
         "custome",
@@ -9,6 +10,7 @@
         "formkey",
         "loged",
         "prefs",
-        "signup"
+        "signup",
+        "userdata"
     ]
 }

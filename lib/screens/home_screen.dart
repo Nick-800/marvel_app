@@ -4,10 +4,13 @@ import 'package:marvel_app/helpers/functions_helper.dart';
 import 'package:marvel_app/helpers/get_size.dart';
 import 'package:marvel_app/main.dart';
 import 'package:marvel_app/providers/auth_provider.dart';
+import 'package:marvel_app/providers/dark_mode_provider.dart';
 import 'package:marvel_app/providers/movies_providers.dart';
 import 'package:marvel_app/screens/auth_screens/profile_screen.dart';
+import 'package:marvel_app/widgets/buttons/main_button.dart';
 import 'package:marvel_app/widgets/cards/movie_card.dart';
-import 'package:marvel_app/widgets/icons/custome_icon_button.dart';
+import 'package:marvel_app/widgets/clickables/drawer_tile.dart';
+import 'package:marvel_app/widgets/icons/custom_icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,30 +30,43 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<MoviesProviders>(builder: (context, movieConsumer, _) {
+    return Consumer2<MoviesProviders, DarkModeProvider>(
+        builder: (context, movieConsumer, dmc, _) {
       return Scaffold(
         drawer: Drawer(
           child: SafeArea(
             child: Column(
               children: [
-                TextButton(
-                    onPressed: () {
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .logout()
-                          .then((onValue) {
-                        if (onValue) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ScreenRouter()),
-                            (route) => false,
-                          );
-                        } else {
-                          printDebug("FAILED");
-                        }
-                      });
+                DrawerTile(
+                    text: "Dark",
+                    onTab: () {
+                      Provider.of<DarkModeProvider>(context, listen: false)
+                          .switchMode();
                     },
-                    child: const Text("LogOut"))
+                    icon: Icons.abc),
+                    SizedBox(height: getSize(context).height * 0.74),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: MainButton(
+                    borderRadius: 3,
+                      onTap: () {
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .logout()
+                            .then((onValue) {
+                          if (onValue) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ScreenRouter()),
+                              (route) => false,
+                            );
+                          } else {
+                            printDebug("FAILED");
+                          }
+                        });
+                      },
+                      text: "LogOut"),
+                )
               ],
             ),
           ),
@@ -73,7 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
             CustomIconButton(
                 asset: "assets/icons/InboxIcon.png",
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> const ProfileScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfileScreen()));
                 }),
           ],
         ),

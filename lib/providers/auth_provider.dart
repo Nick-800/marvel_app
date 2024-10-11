@@ -73,7 +73,6 @@ class AuthProvider extends BaseProvider {
   reNewToken() {}
   Future<UserModel?> getMe() async {
     setIsLoading(true);
-    print(55555555);
     final res = await api.get(
       "https://lati.kudo.ly/api/user",
     );
@@ -85,7 +84,7 @@ class AuthProvider extends BaseProvider {
       return user;
     } else {
       setIsLoading(false);
-      print(res.body);
+      printDebug(res.body);
       return null;
     }
   }
@@ -95,14 +94,12 @@ class AuthProvider extends BaseProvider {
     final res = await api.put("https://lati.kudo.ly/api/users/update", body);
 
     if (res.statusCode == 200) {
-      print(555555555555555);
-      print(res.body);
+      printDebug(res.body);
       setIsLoading(false);
       getMe();
       return true;
     } else {
-      print(44444444444);
-      print(res.body);
+      printDebug(res.body);
       setIsLoading(false);
       return false;
     }

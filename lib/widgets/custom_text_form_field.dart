@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:marvel_app/helpers/constants.dart';
 
-class CustomeTextFormFiled extends StatefulWidget {
-  const CustomeTextFormFiled(
+class CustomTextFormField extends StatefulWidget {
+  const CustomTextFormField(
       {super.key,
       required this.label,
       this.hint,
@@ -16,10 +16,10 @@ class CustomeTextFormFiled extends StatefulWidget {
   final bool isEn;
 
   @override
-  State<CustomeTextFormFiled> createState() => _CustomeTextFormFiledState();
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
 }
 
-class _CustomeTextFormFiledState extends State<CustomeTextFormFiled> {
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
