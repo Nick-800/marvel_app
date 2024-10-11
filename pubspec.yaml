@@ -53,6 +53,7 @@ dependencies:
   cloud_firestore:
   another_flushbar:
   flutter_launcher_icons:
+  file_picker:
 
 flutter_icons:
   android: true

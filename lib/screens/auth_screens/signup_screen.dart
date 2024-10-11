@@ -146,14 +146,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: MainButton(
                     text: "SignUp",
                     onTap: () {
-                      Provider.of<AuthProvider>(context, listen: false).register({
+                      Provider.of<AuthProvider>(context, listen: false).signup({
                         "name": nameController.text,
                         "phone": phoneController.text,
                         "password": passwordController.text,
                         "gender": genderController.text,
                         "DOB": dateController.text
                       }).then((onValue) {
-                        if (onValue.isNotEmpty) {
+                        if (onValue) {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("created ")));

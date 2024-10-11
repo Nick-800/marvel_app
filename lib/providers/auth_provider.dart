@@ -1,122 +1,120 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:marvel_app/helpers/functions_helper.dart';
+import 'package:marvel_app/models/user_model.dart';
 import 'package:marvel_app/providers/base_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends BaseProvider {
   bool authenticated = false;
+  UserModel? user;
 
   initializeAuthProvider() async {
     setIsLoading(true);
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String? token = prefs.getString("token");
+    String? token = pref.getString("token");
+    printDebug("THE TOKEN  $token");
     authenticated = (token != null);
 
-    printDebug("Bearer Token is : $token");
-    printDebug("Auth Status is : $authenticated");
-
-    // if (token == null) {
-    //   authenticated = false;
-    // } else {
-    //   authenticated = true;
-    // }
-
-    setIsLoading(false);
+    setIsFailed(false);
   }
 
-  Future<List> register(Map body) async {
+  Future<bool> signup(Map body) async {
     setIsLoading(true);
-
-    final response =
-        await api.post("https://lati.kudo.ly/api/register", body);
-
-    if (response.statusCode == 200) {
+    final res = await api.post("https://lati.kudo.ly/api/register", body);
+    if (res.statusCode == 200) {
       setIsFailed(false);
-      setIsLoading(false);
-
-      return [true, json.decode(response.body)['data']];
-    } else {
-      setIsFailed(true);
-      setIsLoading(false);
-
-      return [false, json.decode(response.body)['message']];
-    }
-  }
-
-  Future<List> login(Map body) async {
-    setIsLoading(true);
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final response =
-        await api.post("https://lati.kudo.ly/api/login", body);
-
-    if (response.statusCode == 200) {
-      prefs.setString("token", json.decode(response.body)['access_token']);
-      setIsFailed(false);
-      setIsLoading(false);
-
-      return [true, "Logged in successfully"];
-    } else {
-      prefs.clear();
-      setIsFailed(true);
-      setIsLoading(false);
-
-      return [false, "Login failed!"];
-    }
-  }
-
-  logout() async {
-    setIsLoading(true);
-
-    final response =
-        await api.post("https://lati.kudo.ly/api/logout", {});
-
-    if (response.statusCode == 200) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.clear();
-      setIsFailed(false);
-      setIsLoading(false);
       return true;
     } else {
+      printDebug("FFFFFFFFF");
       setIsFailed(true);
+    }
+    printDebug(res.body);
+
+    setIsLoading(false);
+    return false;
+  }
+
+  Future<bool> login(Map body) async {
+    setIsLoading(true);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    printDebug("BEFORE POST REQ");
+    final res = await api.post("https://lati.kudo.ly/api/login", body);
+    if (res.statusCode == 200) {
+      pref.setString("token", jsonEncode(jsonDecode(res.body)['access_token']));
+      authenticated = true;
+      printDebug(
+          "AFTER POST REQ   TOKEN = ${jsonDecode(res.body)['access_token']} ");
+
+      setIsFailed(false);
+      return true;
+    } else {
+      printDebug("FFFFFFFFF");
+      setIsFailed(true);
+    }
+
+    setIsLoading(false);
+    return false;
+  }
+
+  Future<bool> logout() async {
+    final res = await api.post("https://lati.kudo.ly/api/logout", {});
+
+    printDebug(res.body);
+    printDebug(res.headers.toString());
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.clear();
+
+    return true;
+  }
+
+  reNewToken() {}
+  Future<UserModel?> getMe() async {
+    setIsLoading(true);
+    print(55555555);
+    final res = await api.get(
+      "https://lati.kudo.ly/api/user",
+    );
+
+    if (res.statusCode == 200) {
+      user = UserModel.fromJson(jsonDecode(res.body)['data']);
+      printDebug("${user?.toJson()}");
+      setIsLoading(false);
+      return user;
+    } else {
+      setIsLoading(false);
+      print(res.body);
+      return null;
+    }
+  }
+
+  Future<bool> updateUser(Map body) async {
+    setIsLoading(true);
+    final res = await api.put("https://lati.kudo.ly/api/users/update", body);
+
+    if (res.statusCode == 200) {
+      print(555555555555555);
+      print(res.body);
+      setIsLoading(false);
+      getMe();
+      return true;
+    } else {
+      print(44444444444);
+      print(res.body);
       setIsLoading(false);
       return false;
     }
   }
 
-  refreshToken() {}
-
- Future<dynamic> getUser() async {
-    setIsLoading(true);
-
-    try {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? token = prefs.getString("token");
-
-      if (token == null) {
-        setIsFailed(true);
-        setIsLoading(false);
-        return null;
+  updateUserPhoto(File file) async {
+    await api.upload(file, "https://lati.kudo.ly/api/uploader").then((res) {
+      if (res.statusCode == 200) {
+        UserModel newUM = user!;
+        newUM.avatarUrl = jsonDecode(res.body)['image_name'];
+        updateUser({'avatar_url': newUM.avatarUrl.toString()});
       }
-
-      final response = await api.get("https://lati.kudo.ly/api/user");
-
-      if (response.statusCode == 200) {
-        setIsFailed(false);
-        setIsLoading(false);
-        return jsonDecode(response.body)['data'];
-      } else {
-        setIsFailed(true);
-        setIsLoading(false);
-        return null;
-      }
-    } catch (e) {
-      setIsFailed(true);
-      setIsLoading(false);
-      return null;
-    }
+    });
   }
 }

@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           "phone": phoneController.text,
                           "password": passwordController.text
                         }).then((logedIn){
-                          if (logedIn.first) {
+                          if (logedIn) {
                              Navigator.pushAndRemoveUntil(
                                 context,
                                 CupertinoPageRoute(
@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 (route) => false);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text(logedIn.last),
+                              content: Text(logedIn.toString()),
                             ));
                           }
                         });
@@ -100,13 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                TextButton(
-                  child:const Text(" don't Have An account ? create new Account "),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (contex) => const SignUpScreen()));
-                  },
-                )
+               
+
+              
               ],
             ),
           ),
