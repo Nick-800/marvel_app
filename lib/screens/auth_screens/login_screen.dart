@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:marvel_app/helpers/constants.dart';
 import 'package:marvel_app/main.dart';
 import 'package:marvel_app/providers/auth_provider.dart';
+import 'package:marvel_app/screens/auth_screens/signup_screen.dart';
+import 'package:marvel_app/widgets/buttons/alt_button.dart';
 import 'package:marvel_app/widgets/buttons/main_button.dart';
 import 'package:marvel_app/widgets/custome_text_form_filde.dart';
 import 'package:provider/provider.dart';
@@ -76,9 +78,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             .login({
                           "phone": phoneController.text,
                           "password": passwordController.text
-                        }).then((logedIn){
+                        }).then((logedIn) {
                           if (logedIn) {
-                             Navigator.pushAndRemoveUntil(
+                            Navigator.pushAndRemoveUntil(
                                 context,
                                 CupertinoPageRoute(
                                     builder: (context) => const ScreenRouter()),
@@ -90,18 +92,22 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         });
                       }
-                      
                     },
                     borderRadius: 10,
                     btnColor: mainColor,
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 16,
                 ),
-               
-
-              
+                AltButton(
+                    text: "Register", onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                          builder: (contex) => const SignUpScreen()));
+                    }
+                    , borderRadius: 2)
               ],
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class MainButton extends StatelessWidget {
+class AltButton extends StatelessWidget {
   final String text;
   final Function onTap;
   final Color? btnColor;
@@ -11,7 +11,7 @@ class MainButton extends StatelessWidget {
   final double borderRadius;
   final bool inProgress;
 
-  const MainButton(
+  const AltButton(
       {super.key,
       required this.text,
       required this.onTap,
