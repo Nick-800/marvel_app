@@ -87,8 +87,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       builder: (context) => const ScreenRouter()),
                                   (route) => false);
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                content: Text(logedIn.toString()),
+                              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                content: Text("Login Failed"),
                               ));
                             }
                           });

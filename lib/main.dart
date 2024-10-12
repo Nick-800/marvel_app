@@ -32,18 +32,24 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<MoviesProviders>(
           create: (_) => MoviesProviders(),
         ),
-        ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()..initializeAuthProvider()),
-        ChangeNotifierProvider<DarkModeProvider>(create: (_)=> DarkModeProvider()..getMode())
+        ChangeNotifierProvider<AuthProvider>(
+            create: (_) => AuthProvider()..initializeAuthProvider()),
+        ChangeNotifierProvider<DarkModeProvider>(
+            create: (_) => DarkModeProvider()..getMode())
       ],
-      child: Consumer<DarkModeProvider>(builder: (context, dmc, _){
+      child: Consumer<DarkModeProvider>(builder: (context, dmc, _) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
-            scaffoldBackgroundColor: dmc.isDark ? Colors.black : Colors.white,
-            drawerTheme: DrawerThemeData( backgroundColor:  dmc.isDark ? Colors.black : Colors.white,),
-            tabBarTheme: TabBarTheme(labelColor: dmc.isDark ? Colors.white : Colors.black),
-            appBarTheme: AppBarTheme(backgroundColor: dmc.isDark ? Colors.white12 : Colors.white),
+            scaffoldBackgroundColor: dmc.isDark ? Colors.black38 : Colors.white,
+            drawerTheme: DrawerThemeData(
+              backgroundColor: dmc.isDark ? Colors.black : Colors.white,
+            ),
+            tabBarTheme: TabBarTheme(
+                labelColor: dmc.isDark ? Colors.white : Colors.black),
+            appBarTheme: AppBarTheme(
+                backgroundColor: dmc.isDark ? Colors.white12 : Colors.white),
             // This is the theme of your application.
             //
             // TRY THIS: Try running your application with "flutter run". You'll see
@@ -64,7 +70,7 @@ class MyApp extends StatelessWidget {
           ),
           home: const SplashScreen(),
         );
-  }),
+      }),
     );
   }
 }
@@ -87,9 +93,10 @@ class _ScreenRouterState extends State<ScreenRouter> {
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(builder: (context, authConsumer, _) {
       return AnimatedSwitcher(
-        duration:animationDuration,
-        child: authConsumer.authenticated ? const  HomeScreen() : const LoginScreen(),
-
+        duration: animationDuration,
+        child: authConsumer.authenticated
+            ? const HomeScreen()
+            : const LoginScreen(),
       );
     });
   }
